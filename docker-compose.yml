@@ -1,0 +1,25 @@
+version: '2'
+services:
+  php:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+  mysql:
+    image: mysql:5.7
+    tty: true 
+    ports:
+      - "3306:3306"
+    restart: unless-stopped 
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_USER=usuario
+      - MYSQL_PASSWORD=1234
+      - MYSQL_DATABASE=base
+    volumes:
+      - ./mysql:/var/lib/mysql

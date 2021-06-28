@@ -4,15 +4,15 @@
 
     class PersonaController{
 
-        public static function AltaDePersona($nombre,$apellido,$edad,$email){
+        public static function AltaDePersona($request){
 
             if($nombre !== "" && $apellido !== "" && $edad !== "" && $email !== ""){
                 try{
                     $p = new PersonaModelo();
-                    $p -> nombre = $nombre;
-                    $p -> apellido = $apellido; 
-                    $p -> edad = $edad;
-                    $p -> email = $email;
+                    $p -> nombre = $request['post']['nombre'];
+                    $p -> apellido = $request['post']['apellido']; 
+                    $p -> edad = $request['post']['edad'];
+                    $p -> email = $request['post']['email'];
                     $p -> guardar();
                     return generarHtml('formularioInsert',['exito' => true]);
                 }
@@ -46,9 +46,9 @@
             return generarHtml('listar',['personas' => $personas]);
         }
         
-        public static function EliminarPersona($id){
+        public static function EliminarPersona($request){
             $p = new PersonaModelo();
-            $p -> obtenerUno($id);
+            $p -> obtenerUno($request['post']['id']);
             $p -> eliminar();
         }
 

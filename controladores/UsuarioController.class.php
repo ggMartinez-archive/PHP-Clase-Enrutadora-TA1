@@ -3,11 +3,11 @@
     require '../utils/autoloader.php';
 
     class UsuarioController{
-        public static function IniciarSesion($usuario,$password){
+        public static function IniciarSesion($request){
             try{
                 $u = new UsuarioModelo();
-                $u -> nombre = $usuario;
-                $u -> password = $password;
+                $u -> nombre = $request['post']['nombre'];
+                $u -> password = $request['post']['password'];
                 $u -> Autenticar();
                 self::crearSesion($u);
                 //cargarVista("menuPrincipal");
@@ -21,13 +21,13 @@
 
         }
 
-        public static function MostrarLogin(){
+        public static function MostrarLogin($request){
             session_start();
             if(isset($_SESSION['autenticado'])) header("Location: /principal");
             else return cargarVista("formularioLogin");
         }
 
-        public static function MostrarMenuPrincipal(){
+        public static function MostrarMenuPrincipal($request){
             session_start();
             if(!isset($_SESSION['autenticado'])) header("Location: /login");
             else return cargarVista("menuPrincipal");
@@ -45,7 +45,7 @@
 
         }
 
-        public static function AltaDeUsuario($usuario,$password,$tipo,$nombreCompleto){
+        public static function AltaDeUsuario($request){
 
             if($usuario !== "" && $password !== "" && $tipo !== "" && $nombreCompleto !== ""){
                 try{

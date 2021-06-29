@@ -9,9 +9,7 @@
                 $u -> nombre = $request['post']['nombre'];
                 $u -> password = $request['post']['password'];
                 $u -> Autenticar();
-                self::crearSesion($u);
-                //cargarVista("menuPrincipal");
-                
+                self::crearSesion($u);                
                 header("Location: /principal");
             }
             catch (Exception $e) {
@@ -36,7 +34,6 @@
 
         private static function crearSesion($usuario){
             session_start();
-            ob_start();
             $_SESSION['usuarioId'] = $usuario -> id;
             $_SESSION['usuarioNombre'] = $usuario -> nombre;
             $_SESSION['usuarioTipo'] = $usuario -> tipo;
@@ -46,23 +43,18 @@
         }
 
         public static function AltaDeUsuario($request){
-
-            if($usuario !== "" && $password !== "" && $tipo !== "" && $nombreCompleto !== ""){
-                try{
-                    $u = new UsuarioModelo();
-                    $u -> nombre = $nombre;
-                    $u -> password = $password; 
-                    $u -> tipo = $tipo;
-                    $u -> nombreCompleto = $nombreCompleto;
-                    $u -> Guardar();
-                    return generarHtml('formularioInsertUsuario',['exito' => true]);
-                }
-                catch(Exception $e){
-                    error_log($e -> getMessage());
-                    return generarHtml('formularioInsertUsuario',['exito' =>false]);
-                }
+            try{
+                $u = new UsuarioModelo();
+                $u -> nombre = $nombre;
+                $u -> password = $password; 
+                $u -> tipo = $tipo;
+                $u -> nombreCompleto = $nombreCompleto;
+                $u -> Guardar();
+                return generarHtml('formularioInsertUsuario',['exito' => true]);
             }
-            return generarHtml('formularioInsertUsuario',['exito' => false]);
+            catch(Exception $e){
+                error_log($e -> getMessage());
+                return generarHtml('formularioInsertUsuario',['exito' =>false]);
+            }
         }
-
     }

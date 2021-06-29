@@ -5,23 +5,19 @@
     class PersonaController{
 
         public static function AltaDePersona($request){
-
-            if($nombre !== "" && $apellido !== "" && $edad !== "" && $email !== ""){
-                try{
-                    $p = new PersonaModelo();
-                    $p -> nombre = $request['post']['nombre'];
-                    $p -> apellido = $request['post']['apellido']; 
-                    $p -> edad = $request['post']['edad'];
-                    $p -> email = $request['post']['email'];
-                    $p -> guardar();
-                    return generarHtml('formularioInsert',['exito' => true]);
-                }
-                catch(Exception $e){
-                    error_log($e -> getMessage());
-                    return generarHtml('formularioInsert',['exito' =>false]);
-                }
+            try{
+                $p = new PersonaModelo();
+                $p -> nombre = $request['post']['nombre'];
+                $p -> apellido = $request['post']['apellido']; 
+                $p -> edad = $request['post']['edad'];
+                $p -> email = $request['post']['email'];
+                $p -> guardar();
+                return generarHtml('formularioInsert',['exito' => true]);
             }
-            return generarHtml('formularioInsert',['exito' => false]);
+            catch(Exception $e){
+                error_log($e -> getMessage());
+                return generarHtml('formularioInsert',['exito' =>false]);
+            }            
         }
 
         public static function ObtenerPersonas(){

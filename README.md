@@ -3,22 +3,9 @@
 Instalar docker, docker-compose, clonar este repo, y tirar esto en la consola:
 `docker-compose up --build`
 
+Ajustar el modelo de usuario a la necesidad.
 
-CREAR ESTA TABLA:
-```
-create table persona(
-    id int primary key auto_increment,
-    nombre varchar(10),
-    apellido varchar(10),
-    edad int,
-    email varchar(50)
-);
+EJECUTAR:
+`git remote remove origin
+git branch -U master`
 
-create table usuario(
-    id int primary key auto_increment,
-    nombre varchar(20),
-    password varchar(255),
-    tipo char,
-    nombre_completo varchar(100)
-);
-```

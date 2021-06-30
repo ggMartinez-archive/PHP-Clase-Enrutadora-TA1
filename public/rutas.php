@@ -6,6 +6,8 @@
     Routes::Add("/login","get","UsuarioController::MostrarLogin");
     Routes::Add("/login","post","UsuarioController::IniciarSesion");
     Routes::Add("/principal","get","UsuarioController::MostrarMenuPrincipal");
+    Routes::AddView("/publico","publico");
+
 
     Routes::Run();
 

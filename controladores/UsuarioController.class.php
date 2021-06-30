@@ -26,9 +26,7 @@
         }
 
         public static function MostrarMenuPrincipal($request){
-            session_start();
-            if(!isset($_SESSION['autenticado'])) header("Location: /login");
-            else return cargarVista("menuPrincipal");
+            return cargarVista("menuPrincipal");
         }
 
 

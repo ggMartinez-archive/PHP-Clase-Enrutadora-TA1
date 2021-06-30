@@ -5,21 +5,23 @@
         private static $routes = Array();
         private static $notFound;
 
-        public static function Add($url,$metodo,$funcion){
+        public static function Add($url,$metodo,$funcion,$middleware = null){
             array_push(self::$routes,[
                 'url' => $url,
                 'funcion' => $funcion,
                 'metodo' => $metodo,
-                'tipo' => "controlador"
+                'tipo' => "controlador",
+                'middleware' => $middleware
             ]);
         }
 
-        public static function AddView($url,$vista){
+        public static function AddView($url,$vista,$middleware = null){
             array_push(self::$routes,[
                 'url' => $url,
                 'funcion' => null,
                 'metodo' => "get",
-                'tipo' => "vista"
+                'tipo' => "vista",
+                'middleware' => $middleware
             ]);
         }
 
@@ -31,12 +33,14 @@
             self::$notFound = true;
             $tipo = null;
             $vista = null;
+            $middleware = null;
             foreach(self::$routes as $route){
                 if($route['tipo'] == "controlador"){
                     if($urlNavegador === $route['url'] && $metodoNavegador === $route['metodo']){
                         $funcion = $route['funcion'];
                         $tipo = $route['tipo'];
                         self::$notFound = false;
+                        $middleware = $route['middleware'];
                         break;
                     }
                 }
@@ -45,14 +49,24 @@
                         $tipo = $route['tipo'];
                         $vista = $route['url'];
                         self::$notFound = false;
+                        $middleware = $route['middleware'];
                         break;
                     }
                 }
             }
 
             if(self::$notFound) cargarVista("404");
-            if($tipo === "vista") cargarVista($vista);
-            if($tipo === "controlador") self::ejecutarControlador($funcion);
+            if($tipo === "vista") 
+                if($middleware)
+                    self::ejecutarMiddlewareView($middleware,$vista);
+                else 
+                    cargarVista($vista);
+            if($tipo === "controlador") {
+                if($middleware)
+                    self::ejecutarMiddleware($middleware,$funcion);
+                else 
+                    self::ejecutarControlador($funcion);
+            }
             
         }
 
@@ -63,5 +77,28 @@
                 'server' => $_SERVER
             ];
             call_user_func_array($funcion,$contexto);
+        }
+
+        private function ejecutarMiddleware($middleware){
+            $contexto = [
+                'post' => $_POST,
+                'get' => $_GET,
+                'server' => $_SERVER,
+                'funcion' => $funcion
+            ];
+            call_user_func_array($middleware,$contexto);
+
+        }
+
+
+        private function ejecutarMiddlewareView($middleware,$vista){
+            $contexto = [
+                'post' => $_POST,
+                'get' => $_GET,
+                'server' => $_SERVER,
+                'vista' => $vista
+            ];
+            call_user_func_array($middleware,$contexto);
+
         }
     }

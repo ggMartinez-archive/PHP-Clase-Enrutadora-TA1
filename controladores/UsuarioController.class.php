@@ -43,10 +43,10 @@
         public static function AltaDeUsuario($request){
             try{
                 $u = new UsuarioModelo();
-                $u -> nombre = $nombre;
-                $u -> password = $password; 
-                $u -> tipo = $tipo;
-                $u -> nombreCompleto = $nombreCompleto;
+                $u -> nombre = $request['post']['nombre'];
+                $u -> password = $request['post']['password']; 
+                $u -> tipo = $request['post']['$tipo'];
+                $u -> nombreCompleto = $request['post']['$nombreCompleto'];
                 $u -> Guardar();
                 return generarHtml('formularioInsertUsuario',['exito' => true]);
             }

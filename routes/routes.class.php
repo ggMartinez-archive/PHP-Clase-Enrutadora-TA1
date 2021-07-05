@@ -10,6 +10,7 @@
                 'url' => $url,
                 'funcion' => $funcion,
                 'metodo' => $metodo,
+                'vista' => null,
                 'tipo' => "controlador",
                 'middleware' => $middleware
             ]);
@@ -21,6 +22,7 @@
                 'funcion' => null,
                 'metodo' => "get",
                 'tipo' => "vista",
+                'vista' => $vista,
                 'middleware' => $middleware
             ]);
         }
@@ -47,15 +49,15 @@
                 else {
                     if($urlNavegador === $route['url']){
                         $tipo = $route['tipo'];
-                        $vista = $route['url'];
                         self::$notFound = false;
+                        $vista = $route['vista'];
                         $middleware = $route['middleware'];
                         break;
                     }
                 }
             }
 
-            if(self::$notFound) cargarVista("404");
+            if(self::$notFound) cargarVista($vista);
             if($tipo === "vista") 
                 if($middleware)
                     self::ejecutarMiddlewareView($middleware,$vista);
@@ -79,7 +81,7 @@
             call_user_func_array($funcion,$contexto);
         }
 
-        private function ejecutarMiddleware($middleware){
+        private function ejecutarMiddleware($middleware,$funcion){
             $contexto = [
                 'post' => $_POST,
                 'get' => $_GET,

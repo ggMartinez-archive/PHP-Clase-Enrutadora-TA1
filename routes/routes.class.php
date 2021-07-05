@@ -76,7 +76,8 @@
             $contexto = [
                 'post' => $_POST,
                 'get' => $_GET,
-                'server' => $_SERVER
+                'server' => $_SERVER,
+                'file' => $_FILE
             ];
             call_user_func_array($funcion,$contexto);
         }
@@ -86,7 +87,9 @@
                 'post' => $_POST,
                 'get' => $_GET,
                 'server' => $_SERVER,
-                'funcion' => $funcion
+                'funcion' => $funcion,
+                'file' => $_FILE
+
             ];
             call_user_func_array($middleware,$contexto);
 

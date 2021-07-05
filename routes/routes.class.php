@@ -57,7 +57,7 @@
                 }
             }
 
-            if(self::$notFound) cargarVista($vista);
+            if(self::$notFound) cargarVista("404");
             if($tipo === "vista") 
                 if($middleware)
                     self::ejecutarMiddlewareView($middleware,$vista);

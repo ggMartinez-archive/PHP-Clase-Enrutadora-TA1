@@ -22,7 +22,7 @@
                 'funcion' => null,
                 'metodo' => "get",
                 'tipo' => "vista",
-                'vista' => $vista
+                'vista' => $vista,
                 'middleware' => $middleware
             ]);
         }
